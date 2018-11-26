@@ -10,12 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="clientes")
-@Data
+@Getter @Setter
 public class Cliente implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -33,8 +33,8 @@ public class Cliente implements Serializable{
 	@Column
 	private String email;
 	
-	@Column
+	@Column(name="create_at")
 	@Temporal(TemporalType.DATE)
-	private Date createdAt;
+	private Date createAt;
 
 }
