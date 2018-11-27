@@ -3,32 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
 </head>
 <body>
 
-	<h1 th:text="${titulo}"></h1>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">Navbar</a>			
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link" href="#">Home
+							<span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>					
+					<li class="nav-item"><a class="nav-link disabled" href="#" th:href="@{/listar}">Clientes</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
 
-	<table>
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Nombre</th>
-				<th>Apellidos</th>
-				<th>Email</th>
-				<th>Fecha</th>
-			</tr>
-		</thead>
-		<tbody>
-		<tr th:each="cliente: ${lista}">
-			<td th:text="${cliente.id}"></td>
-			<td th:text="${cliente.nombre}"></td>
-			<td th:text="${cliente.apellidos}"></td>
-			<td th:text="${cliente.email}"></td>
-			<td th:text="${cliente.createAt}"></td>
-		</tr>
-		</tbody>
-		
-	</table>
+	<div class="container">
+		<h1
+			class="text-secondary border border-success border-top-0 border-left-0 border-right-0"
+			th:text="${titulo}"></h1>
+			
+		<a class="btn btn-sm btn-success" th:href="@{/form}">Agregar</a>
 
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nombre</th>
+					<th>Apellidos</th>
+					<th>Email</th>
+					<th>Fecha</th>
+					<th>Accion</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cliente: ${lista}">
+					<td th:text="${cliente.id}"></td>
+					<td th:text="${cliente.nombre}"></td>
+					<td th:text="${cliente.apellidos}"></td>
+					<td th:text="${cliente.email}"></td>
+					<td th:text="${cliente.createAt}"></td>
+					<td><a class="btn btn-primary btn-xs" th:href="@{/form/}+${cliente.id}" th:text="editar"></a></td>
+					<td><a class="btn btn-danger btn-xs" th:href="@{/eliminar/}+${cliente.id}" th:text="eliminar" onclick="return confirm('Estas seguro de eliminar registro?');"></a></td>
+				</tr>
+			</tbody>
+
+		</table>
+	</div>
 </body>
 </html>

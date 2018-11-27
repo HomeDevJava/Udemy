@@ -2,6 +2,7 @@ package com.cursospring.app.models.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,19 +29,25 @@ public class Cliente implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
-	@Column
+	@NotEmpty
 	private String nombre;
 	
-	@Column
+	@NotEmpty
 	private String apellidos;
 	
-	@Column
+	@NotEmpty
+	@Email
 	private String email;
 	
+	@NotNull
 	@Column(name="create_at")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE) @DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date createAt;
-
+	
+	/*@PrePersist
+	public void preGuardado() {
+		createAt= new Date();
+	}*/
 }
