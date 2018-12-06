@@ -46,6 +46,9 @@ public class Cliente implements Serializable{
 	@Temporal(TemporalType.DATE) @DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date createAt;
 	
+	@Column(name="foto")
+	private String foto;
+	
 	/*@PrePersist
 	public void preGuardado() {
 		createAt= new Date();

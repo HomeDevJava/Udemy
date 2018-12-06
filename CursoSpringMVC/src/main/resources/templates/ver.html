@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout2}">
+<body>
+	<div layout:fragment="content" class="container py-4">
+		<div class="card">
+			<div class="card-header bg-light font-weight-bold" th:text="${titulo}"></div>
+			<div class="card-body">			
+				<img th:if="${#strings.length(cliente.foto) >0 }" class="img-thumbnail rounded float-left" style="max-width: 24%" th:alt="${cliente.foto}" th:src="@{'/upload/' + ${cliente.foto}}">
+				<ul class="list-group">
+					<li class="list-group-item" th:text="${cliente.nombre}"></li>
+					<li class="list-group-item" th:text="${cliente.apellidos}"></li>
+					<li class="list-group-item" th:text="${cliente.email}"></li>
+					<li class="list-group-item" th:text="${cliente.createAt}"></li>
+				</ul>				
+			</div>
+		</div>		
+	</div>	
+</body>
+</html>
