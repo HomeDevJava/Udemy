@@ -15,7 +15,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		
+		//obtenemos el path absoluto de la carpeta upload dentro de la raiz del proyecto
 		String resourcesPath=Paths.get("upload").toAbsolutePath().toUri().toString();
 		//WebMvcConfigurer.super.addResourceHandlers(registry);
 		registry.addResourceHandler("/upload/**").addResourceLocations(resourcesPath);
