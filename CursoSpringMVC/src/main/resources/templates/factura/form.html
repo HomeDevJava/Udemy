@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
    layout:decorate="~{layout/layout2}">
-
+<head><link href="../../static/css/bootstrap.min.css" rel="stylesheet"></head>
 <body>
    <div layout:fragment="content" class="container py-4">
       <div class="card bg-light">
@@ -51,6 +51,7 @@
                   </thead>
                   <tbody></tbody>
                </table>
+               <h5>Total: <span class="badge badge-secondary" id="gran_total">0</span></h5>
                
                <div class="form-group row">
                   <div class="col-sm-6">
