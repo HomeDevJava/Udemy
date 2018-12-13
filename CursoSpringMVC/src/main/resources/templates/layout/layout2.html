@@ -1,40 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<meta charset="UTF-8">
-	<title th:text="'Spring Boot: MVC +Thymeleaf +Data JPA-'+${titulo}"></title>
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
-	<script th:src="@{/js/popper.min.js}"></script>
-	<script th:src="@{/js/bootstrap.min.js}"></script>
+<meta charset="UTF-8">
+<title th:text="'SpringB: MVC+Thymeleaf+Data JPA-'+${titulo}"></title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
+<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/js/jquery-ui.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
 </head>
 <body>
-	<header>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand" href="#">Navbar</a>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-					<li class="nav-item"><a class="nav-link disabled" href="#" th:href="@{/listar}">Clientes</a></li>
-				</ul>
-			</div>
-		</nav>
-		<div class="alert alert-success" th:if="${success != null}"	th:text="${success}"></div>
-		<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
-		<div class="alert alert-warning" th:if="${warning != null}"	th:text="${warning}"></div>
-		<div class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
-	</header>
-
-	<div layout:fragment="content" class="container py-4"></div>
-
-	<footer class="container-fluid m-3">
-		<img alt="Spring logo" th:src="@{/images/spring.png}" width="50px" height="50px">
-		<p class="text-secondary m-0">
-			Powered by <a href="https://spring.io/">Spring 5</a> Proyecto
-			desarrollado en Eclipse + Spring Plugins(STS Sprin Tool 4), Abel
-			Ramos, company 2018,Inc. Todos los derechos reservados. Terminos de uso y privacidad
-		</p>
-	</footer>
+   <header>
+     <!--  BARRA DE MENUS DE NAVEGACION............................................ -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+         <a class="navbar-brand" href="#">Navbar</a>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+               <li class="nav-item active"><a class="nav-link" href="#">Home<span
+                     class="sr-only">(current)</span></a></li>
+               <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+               <li class="nav-item"><a class="nav-link disabled" href="#" th:href="@{/listar}">Clientes</a></li>
+            </ul>
+         </div>
+      </nav>
+      <!-- CUADROS PARA MENSAJES DE ALERTA O ACCION................................. -->
+      <div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>
+      <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+      <div class="alert alert-warning" th:if="${warning != null}" th:text="${warning}"></div>
+      <div class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>
+   </header>
+   <!-- CONTENIDO EDITABLE.......................................................... -->
+   <div layout:fragment="content" class="container py-4"></div>
+   <!--  PIE DE PAGINA............................................................... -->
+   <footer class="container-fluid m-3">
+      <img alt="Spring logo" th:src="@{/images/spring.png}" width="50px" height="50px">
+      <p class="text-secondary m-0">
+         Powered by <a href="https://spring.io/">Spring 5</a> Proyecto desarrollado en Eclipse +
+         Spring Plugins(STS Sprin Tool 4), Abel Ramos, company 2018,Inc. Todos los derechos
+         reservados. Terminos de uso y privacidad
+      </p>
+   </footer>
 </body>
 </html>

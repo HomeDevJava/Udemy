@@ -58,3 +58,22 @@ INSERT INTO clientes (id, nombre, apellidos, email, create_at, foto) VALUES(57, 
 INSERT INTO clientes (id, nombre, apellidos, email, create_at, foto) VALUES(58, 'Jaime', 'Nakamura', 'j.nakamura2@lab.com', '2016-03-11','');
 INSERT INTO clientes (id, nombre, apellidos, email, create_at, foto) VALUES(59, 'Martha', 'Ruiz', 'm.ruiz@lab.com', '2013-12-15','');
 INSERT INTO clientes (id, nombre, apellidos, email, create_at, foto) VALUES(600, 'Jose Ma', 'Lopez', 'j.malopez@lab.com', '2018-01-11','');
+
+
+/*populate tabla productos*/
+INSERT INTO productos(nombre, precio, create_at) VALUES('Panasonic Pantalla LCD 42 pulg.', 6880, NOW());
+INSERT INTO productos(nombre, precio, create_at) VALUES('Sony Camara digital DSC-w320B', 7500, NOW());
+INSERT INTO productos(nombre, precio, create_at) VALUES('Apple iPod shuffle', 12550, NOW());
+INSERT INTO productos(nombre, precio, create_at) VALUES('Hewlett Packard Multifuncional F2280', 25000, NOW());
+INSERT INTO productos(nombre, precio, create_at) VALUES('Bianchi Bicileta Aro 26', 8900, NOW());
+INSERT INTO productos(nombre, precio, create_at) VALUES('Mica Comoda 5 Cajones', 29990, NOW()); 
+
+/*creamos facturas de ejemplo*/
+INSERT INTO facturas(descripcion, observacion, cliente_id,create_at) VALUES('Factura de Equipo de Oficinas',null, 1, NOW());
+INSERT INTO facturas_items(cantidad,factura_id, producto_id) VALUES(1,1,1);
+INSERT INTO facturas_items(cantidad,factura_id, producto_id) VALUES(2,1,4);
+INSERT INTO facturas_items(cantidad,factura_id, producto_id) VALUES(1,1,5);
+INSERT INTO facturas_items(cantidad,factura_id, producto_id) VALUES(1,1,6);
+
+INSERT INTO facturas(descripcion, observacion, cliente_id,create_at) VALUES('Factura Bicileta','alguna nota importante', 1, NOW());
+INSERT INTO facturas_items(cantidad,factura_id, producto_id) VALUES(3,2,5);
