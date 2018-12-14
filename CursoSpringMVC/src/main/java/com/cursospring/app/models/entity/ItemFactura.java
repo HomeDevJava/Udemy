@@ -23,7 +23,7 @@ public class ItemFactura implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	private Integer cantidad;
+	private Long cantidad;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="producto_id")//se podria omitir ya que en automatico genera la relacion y le agreaga _id

@@ -45,6 +45,12 @@
 					return false;
 				}
 			});
+			
+			//despues de enviar los datos del formulario eliminamos la tabla plantilla
+			$('form').submit(function(){
+				$("#plantillaItemsFactura").remove();
+				return;
+			});
 
 		});
 		
