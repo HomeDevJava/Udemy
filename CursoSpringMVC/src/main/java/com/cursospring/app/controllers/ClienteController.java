@@ -32,7 +32,7 @@ public class ClienteController {
 	
 	
 	
-	@RequestMapping(value = "/listar", method = RequestMethod.GET)
+	@RequestMapping(value = { "/listar", "/"}, method = RequestMethod.GET)
 	public String listar(@RequestParam(defaultValue = "0") int page, Model m) {
 
 		Pageable pageRequest = PageRequest.of(page, 10);
