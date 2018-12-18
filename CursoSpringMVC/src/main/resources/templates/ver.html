@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout2}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{layout/layout2}">
 <body>
    <div layout:fragment="content" class="container py-4">
       <div class="card">
@@ -7,7 +7,7 @@
          <div class="card-body">
             <h4>
                <a class="btn btn-info btn-sm" th:href="@{/factura/form/} + ${cliente.id}"
-                  th:text="'Crear Factura'"></a>
+                  th:text="'Crear Factura'" sec:authorize="hasRole('ROLE_ADMIN')"></a>
             </h4>
             <img th:if="${#strings.length(cliente.foto) >0 }"
                class="img-thumbnail rounded float-left" style="max-width: 24%"
@@ -28,8 +28,8 @@
                      <th>Descripcion</th>
                      <th>Fecha</th>
                      <th>Total</th>
-                     <th>Ver</th>
-                     <th>Eliminar</th>
+                     <th  sec:authorize="hasRole('ROLE_ADMIN')">Ver</th>
+                     <th  sec:authorize="hasRole('ROLE_ADMIN')">Eliminar</th>
                   </tr>
                </thead>
                <tbody>
@@ -38,9 +38,9 @@
                      <td th:text="${factura.descripcion}"></td>
                      <td th:text="${factura.createAt}"></td>
                      <td th:text="${factura.total}"></td>
-                     <td><a class="btn btn-sm btn-primary"
+                     <td  sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-sm btn-primary"
                         th:href="@{/factura/ver/} +${factura.id}" th:text="detalle"></a></td>
-                     <td><a class="btn btn-sm btn-danger"
+                     <td  sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-sm btn-danger"
                         th:href="@{/factura/eliminar/} +${factura.id}" th:text="eliminar"
                         onclick="return confirm('¿Esta seguro que desea eliminar la factura?')"></a></td>
                   </tr>

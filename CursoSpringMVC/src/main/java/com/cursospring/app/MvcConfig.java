@@ -25,5 +25,11 @@ public class MvcConfig implements WebMvcConfigurer {
 		log.info(resourcesPath);
 	}
 	
+
+	//agregamos el mapping y view personalizado para mostrar una pagina de error de Acceso denegado mas amistosa
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/error_403").setViewName("error_403");
+	}
 	
 }

@@ -2,10 +2,14 @@ package com.cursospring.app.controllers;
 
 import java.io.IOException;
 import javax.validation.Valid;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,14 +33,25 @@ public class ClienteController {
 
 	@Autowired private IClienteService clienteService;
 	@Autowired private IUploadFileService uploadFileService;
+	protected final Log log = LogFactory.getLog(getClass());
 	
 	
 	
 	@RequestMapping(value = { "/listar", "/"}, method = RequestMethod.GET)
-	public String listar(@RequestParam(defaultValue = "0") int page, Model m) {
+	public String listar(@RequestParam(defaultValue = "0") int page, Model m, Authentication authentication) {
+		
+		//1a forma para obtener el usuario autenticado dentro del controller
+		if(authentication!=null) {
+			log.info("Hola Usuario autenticado, tu username es: "+authentication.getName());
+		}
+		
+		//2a forma(de manera estatica) de obtener el usuario autenticado
+		Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+		if(auth!=null) {
+			log.info("Usuario autenticado Utilizando forma estatica SecurityContextHolder.getContext().getAuthentication(): "+authentication.getName());
+		}
 
 		Pageable pageRequest = PageRequest.of(page, 10);
-
 		Page<Cliente> clientes = clienteService.findAll(pageRequest);
 
 		PageRender<Cliente> pageRender = new PageRender<Cliente>("/listar", clientes);
@@ -77,8 +92,7 @@ public class ClienteController {
 
 		// se evalua que la foto no este vacia
 		if (!foto.isEmpty()) {
-			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null
-					&& cliente.getFoto().length() > 0) {
+			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null	&& cliente.getFoto().length() > 0) {
 				
 				uploadFileService.delete(cliente.getFoto());
 				/*Path rootPath = Paths.get(UPLOAD_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
