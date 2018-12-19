@@ -1,6 +1,9 @@
 package com.cursospring.app.controllers;
 
 import java.io.IOException;
+import java.util.Collection;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -8,8 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,24 +40,42 @@ import com.cursospring.app.util.paginator.PageRender;
 @SessionAttributes("cliente")
 public class ClienteController {
 
-	@Autowired private IClienteService clienteService;
-	@Autowired private IUploadFileService uploadFileService;
+	@Autowired
+	private IClienteService clienteService;
+	@Autowired
+	private IUploadFileService uploadFileService;
 	protected final Log log = LogFactory.getLog(getClass());
-	
-	
-	
-	@RequestMapping(value = { "/listar", "/"}, method = RequestMethod.GET)
-	public String listar(@RequestParam(defaultValue = "0") int page, Model m, Authentication authentication) {
-		
-		//1a forma para obtener el usuario autenticado dentro del controller
-		if(authentication!=null) {
-			log.info("Hola Usuario autenticado, tu username es: "+authentication.getName());
+
+	@RequestMapping(value = { "/listar", "/" }, method = RequestMethod.GET)
+	public String listar(@RequestParam(defaultValue = "0") int page, Model m, Authentication authentication,
+			HttpServletRequest req) {
+
+		// 1a forma para obtener el usuario autenticado dentro del controller
+		if (authentication != null) {
+			log.info("Hola Usuario autenticado, tu username es: " + authentication.getName());
 		}
-		
-		//2a forma(de manera estatica) de obtener el usuario autenticado
-		Authentication auth= SecurityContextHolder.getContext().getAuthentication();
-		if(auth!=null) {
-			log.info("Usuario autenticado Utilizando forma estatica SecurityContextHolder.getContext().getAuthentication(): "+authentication.getName());
+
+		// 2a forma(de manera estatica) de obtener el usuario autenticado
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (!auth.equals(null)) {
+			log.info("Usuario autenticado Utilizando forma estatica: " + auth.getName());
+		}
+
+		if (hasRole("ROLE_ADMIN")) {
+			log.info("Hola " + auth.getName() + " tienes acceso");
+		} else {
+			log.info("Hola " + auth.getName() + " NO tienes acceso");
+		}
+
+		// 3a forma de obtener un usuario autenticado
+		SecurityContextHolderAwareRequestWrapper securityCtx = new SecurityContextHolderAwareRequestWrapper(req,
+				"ROLE_");
+
+		if (securityCtx.isUserInRole("ADMIN")) {
+			log.info("Forma usando SecurityContextHolderAwareRequestWrapper" + auth.getName() + " tienes acceso");
+		}
+		if (req.isUserInRole("ROLE_ADMIN")) {
+			log.info("Forma nativa usando HttpServletRequest" + auth.getName() + " tienes acceso");
 		}
 
 		Pageable pageRequest = PageRequest.of(page, 10);
@@ -62,6 +89,7 @@ public class ClienteController {
 		return "listar3";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form")
 	public String crear(Model m) {
 		m.addAttribute("titulo", "Formulario de cliente");
@@ -69,9 +97,10 @@ public class ClienteController {
 		return "form";
 	}
 
+	@PreAuthorize("hasRole('ROLE_USERS')") 
 	@GetMapping("/ver/{id}")
 	public String ver(@PathVariable Long id, Model m, RedirectAttributes flash) {
-		Cliente cliente = clienteService.fetchByIdWithFacturas(id);//clienteService.findOne(id);
+		Cliente cliente = clienteService.fetchByIdWithFacturas(id);// clienteService.findOne(id);
 		if (cliente == null) {
 			flash.addFlashAttribute("error", "El cliente no existe en la BD");
 			return "redirect:/listar";
@@ -82,6 +111,7 @@ public class ClienteController {
 		return "ver";
 	}
 
+	@Secured("ROLE_ADMIN") 
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public String guardar(@Valid Cliente cliente, @RequestParam("file") MultipartFile foto, BindingResult result,
 			Model m, RedirectAttributes flash, SessionStatus status) {
@@ -92,60 +122,58 @@ public class ClienteController {
 
 		// se evalua que la foto no este vacia
 		if (!foto.isEmpty()) {
-			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null	&& cliente.getFoto().length() > 0) {
-				
+			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null
+					&& cliente.getFoto().length() > 0) {
+
 				uploadFileService.delete(cliente.getFoto());
-				/*Path rootPath = Paths.get(UPLOAD_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
-				File archivo = rootPath.toFile();
-				if (archivo.exists() && archivo.canRead()) {
-					if (archivo.delete()) {
-						flash.addFlashAttribute("info", "Foto: " + cliente.getFoto() + "eliminada con exito!");
-					}
-				}*/
+				/*
+				 * Path rootPath =
+				 * Paths.get(UPLOAD_FOLDER).resolve(cliente.getFoto()).toAbsolutePath(); File
+				 * archivo = rootPath.toFile(); if (archivo.exists() && archivo.canRead()) { if
+				 * (archivo.delete()) { flash.addFlashAttribute("info", "Foto: " +
+				 * cliente.getFoto() + "eliminada con exito!"); } }
+				 */
 			}
-			
-			String uniqueFile=null;
+
+			String uniqueFile = null;
 			try {
 				uniqueFile = uploadFileService.copy(foto);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			cliente.setFoto(uniqueFile);
 			flash.addFlashAttribute("info", "Has subido correctamente " + uniqueFile);
 
-			/*// 2a Alternativa creamos una variable para tener un unico nombre de archivo,obtenemos el path de la carpeta upload que esta
-			// en la raiz de nuestro proyecto y obtenemos el path absoluto
-			String uniqueFile = UUID.randomUUID().toString() + foto.getOriginalFilename();
-			Path rootPath = Paths.get(UPLOAD_FOLDER).resolve(uniqueFile);
-			Path rootAbsolutpath = rootPath.toAbsolutePath();
-
-			// mostramos en consola el path
-			log.info("rootPath: " + rootPath);
-			log.info("rootAbsolute: " + rootAbsolutpath);
-			try {
-				// 1a Alternativa.-creamos el path completo con nombre de la foto y leemos los
-				// bytes, luego se escribe al archivo
-				
-				 * Path fotoPath=Paths.get(rootPath+ "//"+foto.getOriginalFilename()); byte[]
-				 * bytes=foto.getBytes(); Files.write(fotoPath, bytes);
-				 
-
-				// 2a Alternativa para guardar la foto en el path absoluto(carpeta upload dentro
-				// del proyecto)
-				Files.copy(foto.getInputStream(), rootAbsolutpath);
-
-				// asignamos el nombre de la foto al campo en la BD y enviamos un msj al usuario
-				// cliente.setFoto(foto.getOriginalFilename());
-				// 2a Alternativa para asignar el nombre del archivo unique para que no se
-				// sobrescriba
-				cliente.setFoto(uniqueFile);
-				flash.addFlashAttribute("info", "Has subido correctamente " + foto.getOriginalFilename());
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}*/
+			/*
+			 * // 2a Alternativa creamos una variable para tener un unico nombre de
+			 * archivo,obtenemos el path de la carpeta upload que esta // en la raiz de
+			 * nuestro proyecto y obtenemos el path absoluto String uniqueFile =
+			 * UUID.randomUUID().toString() + foto.getOriginalFilename(); Path rootPath =
+			 * Paths.get(UPLOAD_FOLDER).resolve(uniqueFile); Path rootAbsolutpath =
+			 * rootPath.toAbsolutePath();
+			 * 
+			 * // mostramos en consola el path log.info("rootPath: " + rootPath);
+			 * log.info("rootAbsolute: " + rootAbsolutpath); try { // 1a
+			 * Alternativa.-creamos el path completo con nombre de la foto y leemos los //
+			 * bytes, luego se escribe al archivo
+			 * 
+			 * Path fotoPath=Paths.get(rootPath+ "//"+foto.getOriginalFilename()); byte[]
+			 * bytes=foto.getBytes(); Files.write(fotoPath, bytes);
+			 * 
+			 * 
+			 * // 2a Alternativa para guardar la foto en el path absoluto(carpeta upload
+			 * dentro // del proyecto) Files.copy(foto.getInputStream(), rootAbsolutpath);
+			 * 
+			 * // asignamos el nombre de la foto al campo en la BD y enviamos un msj al
+			 * usuario // cliente.setFoto(foto.getOriginalFilename()); // 2a Alternativa
+			 * para asignar el nombre del archivo unique para que no se // sobrescriba
+			 * cliente.setFoto(uniqueFile); flash.addFlashAttribute("info",
+			 * "Has subido correctamente " + foto.getOriginalFilename());
+			 * 
+			 * } catch (IOException e) { e.printStackTrace(); }
+			 */
 
 		}
 
@@ -157,6 +185,7 @@ public class ClienteController {
 		return "redirect:/listar";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form/{id}")
 	public String editar(@PathVariable Long id, Model m, RedirectAttributes flash) {
 		Cliente cliente = null;
@@ -176,6 +205,7 @@ public class ClienteController {
 		}
 	}
 
+	@Secured("ROLE_ADMIN") 
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable Long id, RedirectAttributes flash) {
 		if (id > 0) {
@@ -185,25 +215,49 @@ public class ClienteController {
 			clienteService.delete(id);
 			// enviamos un mensaje al usuario atraves de un flashAttribute
 			flash.addFlashAttribute("success", "Cliente Eliminado con éxito!");
-			
+
 			if (uploadFileService.delete(cliente.getFoto())) {
 				flash.addFlashAttribute("info", "Foto: " + cliente.getFoto() + "eliminada con exito!");
 			}
-			
-			
-			/*// obtenemos el path de la foto del cliente
-			Path rootPath = Paths.get(UPLOAD_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
-			// se pasa a un objeto File para poder borrarlo pero antes validamos que exista
-			// y sea leido
-			File archivo = rootPath.toFile();
-			if (archivo.exists() && archivo.canRead()) {
-				if (archivo.delete()) {
-					flash.addFlashAttribute("info", "Foto: " + cliente.getFoto() + "eliminada con exito!");
-				}
-			}*/
+
+			/*
+			 * // obtenemos el path de la foto del cliente Path rootPath =
+			 * Paths.get(UPLOAD_FOLDER).resolve(cliente.getFoto()).toAbsolutePath(); // se
+			 * pasa a un objeto File para poder borrarlo pero antes validamos que exista //
+			 * y sea leido File archivo = rootPath.toFile(); if (archivo.exists() &&
+			 * archivo.canRead()) { if (archivo.delete()) { flash.addFlashAttribute("info",
+			 * "Foto: " + cliente.getFoto() + "eliminada con exito!"); } }
+			 */
 
 		}
 		return "redirect:/listar";
+	}
+
+	private boolean hasRole(String role) {
+		SecurityContext context = SecurityContextHolder.getContext();
+
+		if (context == null) {
+			return false;
+		}
+
+		Authentication auth2 = context.getAuthentication();
+		if (auth2 == null) {
+			return false;
+		}
+
+		Collection<? extends GrantedAuthority> authorities = auth2.getAuthorities();
+
+		return authorities.contains(new SimpleGrantedAuthority(role));
+
+		/*
+		 * for (GrantedAuthority authority : authorities) {
+		 * if(role.equals(authority.getAuthority())) {
+		 * log.info("Hola usuario ".concat(auth2.getName()).concat("tu role es: ".concat
+		 * (authority.getAuthority()))); return true; } }
+		 * 
+		 * return false;
+		 */
+
 	}
 
 }
