@@ -24,11 +24,12 @@ public class CursoSpringMvcApplication implements CommandLineRunner{
 		updloadService.deleteAll();
 		updloadService.init();
 		
+		/*prueba de uso bcrypt
 		String password="123456";
 		
 		for (int i = 0; i < 2; i++) {
 			String bcryppassword= passwordEncoder.encode(password);
 			System.out.println(bcryppassword);
-		}
+		}*/
 	}
 }

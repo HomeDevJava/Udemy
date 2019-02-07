@@ -2,12 +2,14 @@ package com.cursospring.app.controllers;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,15 +42,15 @@ import com.cursospring.app.util.paginator.PageRender;
 @SessionAttributes("cliente")
 public class ClienteController {
 
-	@Autowired
-	private IClienteService clienteService;
-	@Autowired
-	private IUploadFileService uploadFileService;
+	@Autowired	private IClienteService clienteService;
+	@Autowired	private IUploadFileService uploadFileService;
+	@Autowired MessageSource messageSource; //lo utilizamos para la internacionalizacion
+	
 	protected final Log log = LogFactory.getLog(getClass());
 
 	@RequestMapping(value = { "/listar", "/" }, method = RequestMethod.GET)
 	public String listar(@RequestParam(defaultValue = "0") int page, Model m, Authentication authentication,
-			HttpServletRequest req) {
+			HttpServletRequest req, Locale locale) {
 
 		// 1a forma para obtener el usuario autenticado dentro del controller
 		if (authentication != null) {
@@ -83,7 +85,7 @@ public class ClienteController {
 
 		PageRender<Cliente> pageRender = new PageRender<Cliente>("/listar", clientes);
 
-		m.addAttribute("titulo", "Listado de Clientes");
+		m.addAttribute("titulo", messageSource.getMessage("text.cliente.listar.titulo", null, locale));
 		m.addAttribute("lista", clientes);
 		m.addAttribute("page", pageRender);
 		return "listar3";
@@ -91,8 +93,8 @@ public class ClienteController {
 
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form")
-	public String crear(Model m) {
-		m.addAttribute("titulo", "Formulario de cliente");
+	public String crear(Model m, Locale locale) {
+		m.addAttribute("titulo", messageSource.getMessage("text.cliente.listar.titulo.crear", null, locale));
 		m.addAttribute("cliente", new Cliente());
 		return "form";
 	}
@@ -122,8 +124,7 @@ public class ClienteController {
 
 		// se evalua que la foto no este vacia
 		if (!foto.isEmpty()) {
-			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null
-					&& cliente.getFoto().length() > 0) {
+			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null  && cliente.getFoto().length() > 0) {
 
 				uploadFileService.delete(cliente.getFoto());
 				/*

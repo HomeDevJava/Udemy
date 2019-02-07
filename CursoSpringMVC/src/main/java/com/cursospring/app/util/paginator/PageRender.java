@@ -47,11 +47,8 @@ public class PageRender<T> {
 	
 
 	public String getUrl() { return url; }
-
 	public int getTotalPaginas() {	return totalPaginas; }
-
 	public int getPaginaActual() {	return paginaActual; }
-
 	public List<PageItem> getPaginas() {  return paginas; }
 	public boolean isFirst() {	return page.isFirst();	}	
 	public boolean isLast()  {	return page.isLast();	}

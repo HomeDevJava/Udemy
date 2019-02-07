@@ -5,10 +5,7 @@
       <div class="card">
          <div class="card-header bg-light font-weight-bold" th:text="${titulo}"></div>
          <div class="card-body">
-            <h4>
-               <a class="btn btn-info btn-sm" th:href="@{/factura/form/} + ${cliente.id}"
-                  th:text="'Crear Factura'" sec:authorize="hasRole('ROLE_ADMIN')"></a>
-            </h4>
+            
             <img th:if="${#strings.length(cliente.foto) >0 }"
                class="img-thumbnail rounded float-left" style="max-width: 24%"
                th:alt="${cliente.foto}" th:src="@{'/upload/' + ${cliente.foto}}">

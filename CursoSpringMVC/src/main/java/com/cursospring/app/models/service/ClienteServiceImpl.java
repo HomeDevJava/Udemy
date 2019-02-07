@@ -15,13 +15,13 @@ import com.cursospring.app.models.entity.Producto;
 
 @Service
 public class ClienteServiceImpl implements IClienteService {
-	
+
 	@Autowired private IClienteDao clienteDao;
 	@Autowired private IProductoDao productoDao;
 	@Autowired private IFacturaDao facturaDao;
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<Cliente> findAll() {
 		return (List<Cliente>) clienteDao.findAll();
 	}
@@ -29,22 +29,20 @@ public class ClienteServiceImpl implements IClienteService {
 	@Override
 	@Transactional
 	public void save(Cliente cliente) {
-		clienteDao.save(cliente);		
+		clienteDao.save(cliente);
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Cliente findOne(Long id) {
 		return clienteDao.findById(id).orElse(null);
 	}
-	
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Cliente fetchByIdWithFacturas(Long id) {
 		return clienteDao.fetchByIdWithFacturas(id);
 	}
-
 
 	@Override
 	@Transactional
@@ -53,41 +51,40 @@ public class ClienteServiceImpl implements IClienteService {
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Page<Cliente> findAll(Pageable p) {
 		return clienteDao.findAll(p);
 	}
 
 	@Override
-	@Transactional(readOnly=true)
-	public List<Producto> findByNombre(String term) {		
-		//return productoDao.findByNombre(term);
-		return productoDao.findByNombreLikeIgnoreCase("%"+term+"%");
+	@Transactional(readOnly = true)
+	public List<Producto> findByNombre(String term) {
+		// return productoDao.findByNombre(term);
+		return productoDao.findByNombreLikeIgnoreCase("%" + term + "%");
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Producto findProductoById(Long id) {
+		return productoDao.findById(id).get();
 	}
 
 	@Override
 	@Transactional
 	public void saveFactura(Factura factura) {
-		facturaDao.save(factura);		
-	}
+		facturaDao.save(factura);
+	}	
 
 	@Override
-	@Transactional(readOnly=true)
-	public Producto findProductoById(Long id) {
-		
-		return productoDao.findById(id).get();
-	}
-
-	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Factura findFacturaById(Long id) {
-				return facturaDao.findById(id).orElse(null);
+		return facturaDao.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
 	public void deleteFactura(Long id) {
-				facturaDao.deleteById(id);
+		facturaDao.deleteById(id);
 	}
 
 	@Override

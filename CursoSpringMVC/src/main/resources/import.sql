@@ -77,3 +77,12 @@ INSERT INTO facturas_items(cantidad,factura_id, producto_id) VALUES(1,1,6);
 
 INSERT INTO facturas(descripcion, observacion, cliente_id,create_at) VALUES('Factura Bicileta','alguna nota importante', 1, NOW());
 INSERT INTO facturas_items(cantidad,factura_id, producto_id) VALUES(3,2,5);
+
+
+/*creamos usuarios y roles para la autenticacion*/
+INSERT INTO users(username, password, enabled) VALUES('abel', '$2a$10$CU7OrzoVsaXabKlPBqDPxeGkk8y9i.adbwnhOLse7Tt53/xQ1NQOG', 1);
+INSERT INTO users(username, password, enabled) VALUES('admin', '$2a$10$66cmS8vGtSaXbCRK.4p.h.WF9PWlMgXxuN421RSofMPZYS/if/xfK', 1);
+
+INSERT INTO authorities(user_id, authority) VALUES(1, 'ROLE_USERS');
+INSERT INTO authorities(user_id, authority) VALUES(2, 'ROLE_USERS');
+INSERT INTO authorities(user_id, authority) VALUES(2, 'ROLE_ADMIN');

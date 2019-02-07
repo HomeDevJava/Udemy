@@ -13,10 +13,10 @@
                <thead class="thead-dark">
                   <tr>
                      <th sec:authorize="hasRole('ROLE_USERS')">Id</th>
-                     <th>Nombre</th>
-                     <th>Apellidos</th>
-                     <th>Email</th>
-                     <th>Fecha</th>
+                     <th th:text="#{text.cliente.nombre}">Nombre</th>
+                     <th th:text="#{text.cliente.apellido}">Apellidos</th>
+                     <th th:text="#{text.cliente.email}">Email</th>
+                     <th th:text="#{text.cliente.createAt}">Fecha</th>
                      <th sec:authorize="hasRole('ROLE_ADMIN')">Accion</th>
                   </tr>
                </thead>
@@ -28,8 +28,9 @@
                      <td th:text="${cliente.apellidos}"></td>
                      <td th:text="${cliente.email}"></td>
                      <td th:text="${cliente.createAt}"></td>
-                     <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-primary btn-sm" th:href="@{/form/}+${cliente.id}"
-                        th:text="editar"></a> <a class="btn btn-danger btn-sm" th:href="@{/eliminar/}+${cliente.id}" th:text="eliminar"
+                     <td sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a class="btn btn-primary btn-sm" th:href="@{/form/}+${cliente.id}" th:text="editar"></a> 
+                        <a class="btn btn-danger btn-sm" th:href="@{/eliminar/}+${cliente.id}" th:text="eliminar"
                         onclick="return confirm('Estas seguro de eliminar registro?');"></a> <a class="btn btn-info btn-sm"
                         th:href="@{'/factura/form/' + ${cliente.id}}" th:text="Crear"></a></td>
                   </tr>
