@@ -20,13 +20,16 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name="facturas")
-@Getter @Setter
+@Getter  @Setter
 public class Factura implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -44,6 +47,7 @@ public class Factura implements Serializable{
 	private Date createAt;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JsonBackReference
 	private Cliente cliente;
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval=true)
@@ -70,5 +74,14 @@ public class Factura implements Serializable{
 	public void prePersist() {
 		createAt=new Date();
 	}
+	
+	//se declara el getter del cliente ya que en la vista por XML da un loop infinito si no se le agrega la anotacion XMltransient
+	//debido a que cliente y factura tienen relacion bidireccional
+	@XmlTransient
+	public Cliente getCliente() {
+		return cliente;
+	}
+	
+	
 
 }
