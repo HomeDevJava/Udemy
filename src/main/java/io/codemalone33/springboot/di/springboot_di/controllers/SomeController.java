@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.codemalone33.springboot.di.springboot_di.models.Product;
-import io.codemalone33.springboot.di.springboot_di.services.ProductService;
+import io.codemalone33.springboot.di.springboot_di.services.ProductServiceImpl;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api")
 public class SomeController {
 
-    private ProductService productService= new ProductService();
+    private ProductServiceImpl productService= new ProductServiceImpl();
 
     @GetMapping("/")
     public List<Product> lista() {
-        return new ProductService().findAll();
+        return new ProductServiceImpl().findAll();
     }
     
     @GetMapping("/{id}")

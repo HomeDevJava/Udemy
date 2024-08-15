@@ -1,10 +1,10 @@
-package io.codemalone33.springboot.di.springboot_di.services;
+package io.codemalone33.springboot.di.springboot_di.providers;
 
 import java.util.List;
 
 import io.codemalone33.springboot.di.springboot_di.models.Product;
 
-public interface ProductService {
+public interface ProductoRepository {
 
     List<Product> findAll();
 

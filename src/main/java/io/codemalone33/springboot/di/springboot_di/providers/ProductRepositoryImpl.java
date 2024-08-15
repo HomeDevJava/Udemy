@@ -4,11 +4,11 @@ import java.util.List;
 
 import io.codemalone33.springboot.di.springboot_di.models.Product;
 
-public class ProductRepository {
+public class ProductRepositoryImpl implements ProductoRepository {
 
     List<Product> data;
 
-    public ProductRepository() {
+    public ProductRepositoryImpl() {
         this.data= List.of(
                 new Product(1L, "Memoria Corsair 32GB", 659L),
                 new Product(2L, "Cpu Intel Core i7 11200F", 2000L),
@@ -19,10 +19,12 @@ public class ProductRepository {
         );
     }
 
+    @Override
     public List<Product> findAll() {
         return data;
     }
 
+    @Override
     public Product findById(Long id) {
         return data.stream().filter(product -> product.getId().equals(id)).findFirst().orElse(null);
     }
