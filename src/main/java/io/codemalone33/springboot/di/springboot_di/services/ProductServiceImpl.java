@@ -3,12 +3,17 @@ package io.codemalone33.springboot.di.springboot_di.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import io.codemalone33.springboot.di.springboot_di.models.Product;
 import io.codemalone33.springboot.di.springboot_di.providers.ProductRepositoryImpl;
 
+@Component
 public class ProductServiceImpl  implements ProductService {
 
-    private ProductRepositoryImpl productRepository= new ProductRepositoryImpl();
+    @Autowired
+    private ProductRepositoryImpl productRepository;
 
     @Override
     public List<Product> findAll() {
