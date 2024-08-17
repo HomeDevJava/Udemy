@@ -2,11 +2,11 @@ package io.codemalone33.springboot.di.springboot_di.providers;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import io.codemalone33.springboot.di.springboot_di.models.Product;
 
-@Component
+@Repository
 public class ProductRepositoryImpl implements ProductoRepository {
 
     private List<Product> data;
