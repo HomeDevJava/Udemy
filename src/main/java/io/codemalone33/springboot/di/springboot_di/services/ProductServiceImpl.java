@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.codemalone33.springboot.di.springboot_di.models.Product;
-import io.codemalone33.springboot.di.springboot_di.providers.ProductRepositoryImpl;
+import io.codemalone33.springboot.di.springboot_di.providers.ProductoRepository;
 
 @Component
 public class ProductServiceImpl  implements ProductService {
 
     @Autowired
-    private ProductRepositoryImpl productRepository;
+    private ProductoRepository productRepository;
 
     @Override
     public List<Product> findAll() {
