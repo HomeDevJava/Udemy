@@ -3,10 +3,12 @@ package io.codemalone33.springboot.di.springboot_di.providers;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.web.context.annotation.RequestScope;
 
 import io.codemalone33.springboot.di.springboot_di.models.Product;
 
 @Repository
+@RequestScope
 public class ProductRepositoryImpl implements ProductoRepository {
 
     private List<Product> data;

@@ -21,13 +21,14 @@ public class ProductServiceImpl  implements ProductService {
     public List<Product> findAll() {
         return productRepository.findAll().stream().map(p ->{
             Double priceTax= p.getPrice() * 1.21;
-            //p.setPrice(priceTax.longValue());
-            
-            Product newProd=(Product) p.clone();
-            newProd.setPrice(priceTax.longValue());
+            p.setPrice(priceTax.longValue());
+            return p;
+            // Product newProd=(Product) p.clone();
+            // newProd.setPrice(priceTax.longValue());
+            // return newProd ;
+           
             //se regresa un nuevo objeto para que no se modifique el objeto original
             //return new Product(p.getId(), p.getName(), priceTax.longValue());
-            return newProd ;
         }).collect(Collectors.toList());
     }
 
