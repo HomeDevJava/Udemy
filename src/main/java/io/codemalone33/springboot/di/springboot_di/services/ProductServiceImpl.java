@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import io.codemalone33.springboot.di.springboot_di.models.Product;
@@ -13,6 +14,7 @@ import io.codemalone33.springboot.di.springboot_di.providers.ProductoRepository;
 public class ProductServiceImpl  implements ProductService {
 
     @Autowired
+    @Qualifier("productRepositoryImpl")
     private ProductoRepository productRepository;
 
     @Override
