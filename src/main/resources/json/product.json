@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "name": "Xbox series X",
+        "price": 823
+    },
+    {
+        "id": 2,
+        "name": "Cpu Intel Core i7 11200F",
+        "price": 2500
+    },
+    {
+        "id": 3,
+        "name": "MotherBoard MSI B450",
+        "price": 1875
+    },
+    {
+        "id": 4,
+        "name": "Gabinete Corsair",
+        "price": 500
+    },
+    {
+        "id": 5,
+        "name": "Placa de Video MSI",
+        "price": 1250
+    },
+    {
+        "id": 6,
+        "name": "Disco SSD 1TB",
+        "price": 1000
+    },
+    {
+        "id": 7,
+        "name": "Chaqueta pluma Negra",
+        "price": 612
+    }
+]
