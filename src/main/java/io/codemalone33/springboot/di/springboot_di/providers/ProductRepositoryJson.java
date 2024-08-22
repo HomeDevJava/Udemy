@@ -15,7 +15,7 @@ public class ProductRepositoryJson implements ProductoRepository {
 
     public ProductRepositoryJson() {
 
-        ClassPathResource resource = new ClassPathResource("json/products.json");
+        ClassPathResource resource = new ClassPathResource("json/product.json");
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -28,13 +28,12 @@ public class ProductRepositoryJson implements ProductoRepository {
 
     @Override
     public List<Product> findAll() {
-        return data;
+        return this.data;
     }
 
     @Override
     public Product findById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+       return data.stream().filter(p->p.getId().equals(id)).findFirst().orElse(null);
     }
 
 }

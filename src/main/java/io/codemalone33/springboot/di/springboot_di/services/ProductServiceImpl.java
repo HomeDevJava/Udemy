@@ -15,7 +15,7 @@ import io.codemalone33.springboot.di.springboot_di.providers.ProductoRepository;
 public class ProductServiceImpl  implements ProductService {
 
     @Autowired
-    @Qualifier("productRepositoryImpl")
+    @Qualifier("productRepositoryJson")
     private ProductoRepository productRepository;
 
     @Value("${config.product.price.tax}")
