@@ -17,6 +17,7 @@ public class ProductServiceImpl  implements ProductService {
     @Autowired
     @Qualifier("productRepositoryJson")
     private ProductoRepository productRepository;
+    
 
     @Value("${config.product.price.tax}")
     private Double tax;
