@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringbootDifacturasApplication<springboot-difacturas>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "io.codemalone.springboot.difactturas.springboot_difacturas.SpringbootDifacturasApplication",
+            "projectName": "springboot-difacturas",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
