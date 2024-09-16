@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{layout/layout2}">
+<body>
+   <div layout:fragment="content" class="container py-4">
+      <div class="card border-warning bg-danger text-white">
+         <div class="card-header font-weight-bold text-center">Error: Acceso Denegado</div>
+         <div class="card-body">
+            <h5>Lo sentimos <span th:text="${#httpServletRequest.remoteUser}"></span> NO tienes permisos para este recurso.</h5>
+            <a th:href="@{/listar}" class="btn btn-outline-light">Ir al Inicio</a>
+         </div>
+      </div>
+
+   </div>
+
+</body>
+</html>
