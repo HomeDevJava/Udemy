@@ -9,7 +9,15 @@ public class AppController {
     @GetMapping("/app")
     public String index() {
         int value = 1 / 0;
+        System.out.println(value);
         return "ok 200";
+    }
+
+    @GetMapping("/parsear")
+    public String parsear() {
+        int value = Integer.parseInt("10x");
+        System.out.println(value);
+        return "ok 200 - parseando/convirtiendo a entero";
     }
 
 }
