@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import io.codemalone33.springboot.error.springboot_error.exceptions.UserNotFoundException;
 import io.codemalone33.springboot.error.springboot_error.models.User;
 
 @Service
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
                 user = u;
                 break;
             }
+        }
+        if (user == null) {
+            throw new UserNotFoundException("Error el usuario no existe");
         }
         return user;
     }
