@@ -1,10 +1,10 @@
 package io.codemalone33.springboot.error.springboot_error.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import io.codemalone33.springboot.error.springboot_error.exceptions.UserNotFoundException;
 import io.codemalone33.springboot.error.springboot_error.models.User;
 
 @Service
@@ -26,18 +26,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
-        User user = null;
-        for (User u : users) {
+    public Optional<User> findById(Long id) {
+        User user = users.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
+        /* for (User u : users) {
             if (u.getId() == id) {
                 user = u;
                 break;
             }
-        }
-        if (user == null) {
-            throw new UserNotFoundException("Error el usuario no existe");
-        }
-        return user;
+        } */
+       
+        return Optional.ofNullable(user);
     }
 
 }

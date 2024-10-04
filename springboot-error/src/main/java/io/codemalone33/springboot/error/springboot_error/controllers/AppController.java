@@ -2,6 +2,7 @@ package io.codemalone33.springboot.error.springboot_error.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import io.codemalone33.springboot.error.springboot_error.exceptions.UserNotFoundException;
 import io.codemalone33.springboot.error.springboot_error.models.User;
 import io.codemalone33.springboot.error.springboot_error.services.UserService;
 
@@ -38,7 +39,7 @@ public class AppController {
 
     @GetMapping("/ver/{id}")
     public User findByIdUser(@PathVariable(name = "id") Long idLong) {
-        User user = userService.findById(idLong);
+        User user = userService.findById(idLong).orElseThrow( () -> new UserNotFoundException("Error: User not found."));
         System.out.println(user.getEmail());
         return user;
     }
