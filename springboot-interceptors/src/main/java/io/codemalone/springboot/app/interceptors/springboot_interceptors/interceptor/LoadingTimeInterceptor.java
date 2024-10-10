@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Debes anotarte con @Component para que Spring sepa que es una clase y se agregue al contenedor de Spring para poderla utilizar con DI.
  */
 
-@Component
+@Component("loadingTimeInterceptor")
 public class LoadingTimeInterceptor implements HandlerInterceptor {
 
     private static final Logger logger = LoggerFactory.getLogger(LoadingTimeInterceptor.class);
