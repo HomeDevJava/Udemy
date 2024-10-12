@@ -1,5 +1,7 @@
 package io.codemalone.springboot.app.interceptors.springboot_interceptors.interceptor;
 
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -26,7 +28,15 @@ public class LoadingTimeInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         HandlerMethod controller= (HandlerMethod) handler;
+
         logger.info("LoadingTimeInterceptor: preHandle --Entrando..." + controller.getMethod().getName());
+
+        /* creamos una variable para el tiempo de inicio y la guardamos en el request */
+        long startTime = System.currentTimeMillis();
+        request.setAttribute("startTime", startTime);
+
+        /* simulamos el tiempo de carga de la peticion */
+        Thread.sleep(new Random().nextInt(500));
 
         return true;
     }
@@ -34,6 +44,17 @@ public class LoadingTimeInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
+
+        /* obtenemos el tiempo de inicio y lo guardamos en una variable */
+        long startTime = (Long) request.getAttribute("startTime");
+
+        /* obtenemos el tiempo de finalizacion y lo guardamos en una variable */
+        long endTime = System.currentTimeMillis();
+        /* calculamos el tiempo de ejecucion y lo guardamos en una variable */
+        long totalTime = endTime - startTime;
+
+        /* imprimimos el tiempo de ejecucion */
+        logger.info("LoadingTimeInterceptor: postHandle --Total time: " + totalTime + "ms");
 
         logger.info("LoadingTimeInterceptor: postHandle --Saliendo..." + ((HandlerMethod) handler).getMethod().getName());
 
