@@ -26,7 +26,11 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
        
-        registry.addInterceptor(loadingTimeInterceptor);
+        /* agregamos las rutas que queremos interceptar */
+        //registry.addInterceptor(loadingTimeInterceptor).addPathPatterns("/api/bar","/api/tar");
+
+        /* agregamos la rutas que no queremos interceptar */
+        registry.addInterceptor(loadingTimeInterceptor).excludePathPatterns("/api/bar","/api/tar");
     }
 
     
