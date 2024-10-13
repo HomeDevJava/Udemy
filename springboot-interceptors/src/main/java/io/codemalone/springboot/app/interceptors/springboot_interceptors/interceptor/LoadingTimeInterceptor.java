@@ -1,6 +1,8 @@
 package io.codemalone.springboot.app.interceptors.springboot_interceptors.interceptor;
 
 import java.util.Random;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,7 +31,7 @@ public class LoadingTimeInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        HandlerMethod controller= (HandlerMethod) handler;
+        HandlerMethod controller = (HandlerMethod) handler;
 
         logger.info("LoadingTimeInterceptor: preHandle --Entrando..." + controller.getMethod().getName());
 
@@ -37,6 +41,20 @@ public class LoadingTimeInterceptor implements HandlerInterceptor {
 
         /* simulamos el tiempo de carga de la peticion */
         Thread.sleep(new Random().nextInt(500));
+
+        /*
+         * cuando el return es false, el controlador no se ejecuta, y el request no se
+         * enviara al cliente. por lo tanto se realiza una respuesta de error.
+         * Map<String, String> error = new HashMap<>();
+         * error.put("message", "Error al intentar accesar a la peticion");
+         * error.put("time", String.valueOf(startTime));
+         * 
+         * ObjectMapper mapper = new ObjectMapper();
+         * 
+         * response.setContentType("application/json");
+         * response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+         * mapper.writeValue(response.getWriter(), error);
+         */
 
         return true;
     }
@@ -56,7 +74,8 @@ public class LoadingTimeInterceptor implements HandlerInterceptor {
         /* imprimimos el tiempo de ejecucion */
         logger.info("LoadingTimeInterceptor: postHandle --Total time: " + totalTime + "ms");
 
-        logger.info("LoadingTimeInterceptor: postHandle --Saliendo..." + ((HandlerMethod) handler).getMethod().getName());
+        logger.info(
+                "LoadingTimeInterceptor: postHandle --Saliendo..." + ((HandlerMethod) handler).getMethod().getName());
 
     }
 
