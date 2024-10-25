@@ -22,6 +22,7 @@ public class AppController {
         Map<String, Object> body = new HashMap<>();
         body.put("title", "Bienvenidos alsistema de atencion de clientes");
         body.put("time", new Date());
+        //obtenemos el mensaje del request del interceptor
         body.put("message", request.getAttribute("message"));
         return ResponseEntity.ok(body);
     }
