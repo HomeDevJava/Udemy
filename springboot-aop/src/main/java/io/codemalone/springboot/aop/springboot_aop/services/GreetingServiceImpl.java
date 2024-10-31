@@ -12,4 +12,9 @@ public class GreetingServiceImpl implements IGreeting {
        return result;
     }
 
+    @Override
+    public String sayHelloError(String person, String phrase) {      
+        throw new UnsupportedOperationException("Unimplemented method 'sayHelloError'");
+    }
+
 }
