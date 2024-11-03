@@ -5,9 +5,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
@@ -32,34 +34,34 @@ public class GreetingAspect {
         
         logger.info("------Before Execution------");
         String method= joinPoint.getSignature().getName();
-        logger.info("Class invoked: " + joinPoint.getSignature().getDeclaringTypeName());
-        logger.info("Method invoked: " + method);
+        logger.info("Class invoked in Before: " + joinPoint.getSignature().getDeclaringTypeName());
+        logger.info("Method invoked in Before: " + method);
         
         //forma sencilla de obtener los argumentos
         String argsString = Arrays.toString(joinPoint.getArgs());
-        logger.info("Arguments passed: " + argsString);
+        logger.info("Arguments passed in Before: " + argsString);
     }
     
     @After("execution(* io.codemalone.springboot.aop.springboot_aop.services.*.*(..))")
     public void afterGreeting(JoinPoint joinPoint) {
         logger.info("------after greeting-----");
-        logger.info("Class invoked: " + joinPoint.getSignature().getDeclaringTypeName());
+        logger.info("Class invoked in After: " + joinPoint.getSignature().getDeclaringTypeName());
         
         
         //2a forma de obtener los argumentos utilizando stream y Arrays
         String argumentos= Arrays.stream(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(", "));
-        logger.info("Arguments passed: " + argumentos);
+        logger.info("Arguments passed in After: " + argumentos);
     }
 
     @AfterReturning("execution(* io.codemalone.springboot.aop.springboot_aop.services.*.*(..))")
     public void afterReturningGreeting(JoinPoint joinPoint) {
         logger.info("------afterReturning Execution ok------");
-        logger.info("Class invoked: " + joinPoint.getSignature().getDeclaringTypeName());
-        logger.info("Method invoked: " + joinPoint.getSignature().getName());
+        logger.info("Class invoked in AfterReturning: " + joinPoint.getSignature().getDeclaringTypeName());
+        logger.info("Method invoked in AfterReturning: " + joinPoint.getSignature().getName());
         
         //3a forma de obtener los argumentos
         String argsString = Stream.of(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(", "));
-        logger.info("Arguments passed: " + argsString);
+        logger.info("Arguments passed in AfterReturning: " + argsString);
     }
 
     @AfterThrowing("execution(* io.codemalone.springboot.aop.springboot_aop.services.*.*(..))")
@@ -69,8 +71,28 @@ public class GreetingAspect {
         logger.info("Method invoked: " + joinPoint.getSignature().getName());
         
         //3a forma de obtener los argumentos
-        String argsString = Stream.of(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(", "));
+        String argsString =Arrays.stream(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(", "));
         logger.info("Arguments passed: " + argsString);
+    }
+
+    @Around("execution(* io.codemalone.springboot.aop.springboot_aop.services.*.*(..))")
+    public Object aroundGreeting(ProceedingJoinPoint joinPoint) throws Throwable {
+        logger.info("------Around Execution------");
+        logger.info("Class invoked: " + joinPoint.getSignature().getDeclaringTypeName());
+        logger.info("Method invoked: " + joinPoint.getSignature().getName());
+        Object result = null;
+        try {
+            result = joinPoint.proceed();
+            String argsString = Arrays.toString(joinPoint.getArgs());
+            logger.info("Argumentos pasados: " + argsString);
+            logger.info("Result of method Around: " + result.toString());
+            return result;
+        } catch (Throwable e) {
+            logger.error("Error en la llamada del metodo: " + e.getMessage());
+           
+        }
+        
+       return result;
     }
 
 }
