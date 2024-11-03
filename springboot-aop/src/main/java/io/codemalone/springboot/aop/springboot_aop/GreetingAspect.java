@@ -12,8 +12,10 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /* Este aspecto se encarga de registrar el log de ejecución de un método
@@ -23,13 +25,18 @@ import org.springframework.stereotype.Component;
  * utiliza expresiones regulares para seleccionar el método
  */
 
+@Order(1)
 @Component
 @Aspect
 public class GreetingAspect {
 
     private Logger logger = LoggerFactory.getLogger(GreetingAspect.class);
 
-    @Before("execution(* io.codemalone.springboot.aop.springboot_aop.services.*.*(..))")
+    //creamos un punto de corte para reutilizarla en otros métodos
+    @Pointcut("execution(* io.codemalone.springboot.aop.springboot_aop.services.GreetingServiceImpl.*(..))")
+    private void greetingLoggerPointcut() {}
+
+    @Before("greetingLoggerPointcut()")
     public void beforeGreeting(JoinPoint joinPoint) {
         
         logger.info("------Before Execution------");
@@ -42,18 +49,10 @@ public class GreetingAspect {
         logger.info("Arguments passed in Before: " + argsString);
     }
     
-    @After("execution(* io.codemalone.springboot.aop.springboot_aop.services.*.*(..))")
-    public void afterGreeting(JoinPoint joinPoint) {
-        logger.info("------after greeting-----");
-        logger.info("Class invoked in After: " + joinPoint.getSignature().getDeclaringTypeName());
-        
-        
-        //2a forma de obtener los argumentos utilizando stream y Arrays
-        String argumentos= Arrays.stream(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(", "));
-        logger.info("Arguments passed in After: " + argumentos);
-    }
 
-    @AfterReturning("execution(* io.codemalone.springboot.aop.springboot_aop.services.*.*(..))")
+    
+    //el método afterReturning se ejecuta cuando el método finaliza con éxito
+    @AfterReturning("greetingLoggerPointcut()")
     public void afterReturningGreeting(JoinPoint joinPoint) {
         logger.info("------afterReturning Execution ok------");
         logger.info("Class invoked in AfterReturning: " + joinPoint.getSignature().getDeclaringTypeName());
@@ -63,19 +62,33 @@ public class GreetingAspect {
         String argsString = Stream.of(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(", "));
         logger.info("Arguments passed in AfterReturning: " + argsString);
     }
-
-    @AfterThrowing("execution(* io.codemalone.springboot.aop.springboot_aop.services.*.*(..))")
+    
+    //el método afterThrowing se ejecuta cuando se produce una excepción
+    @AfterThrowing("greetingLoggerPointcut()")
     public void afterThrowingGreeting(JoinPoint joinPoint) {
         logger.info("------afterThrowing Error------");
         logger.info("Class invoked: " + joinPoint.getSignature().getDeclaringTypeName());
         logger.info("Method invoked: " + joinPoint.getSignature().getName());
         
-        //3a forma de obtener los argumentos
-        String argsString =Arrays.stream(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(", "));
+        //forma
+        String argsString =Arrays.toString(joinPoint.getArgs());
         logger.info("Arguments passed: " + argsString);
     }
-
-    @Around("execution(* io.codemalone.springboot.aop.springboot_aop.services.*.*(..))")
+    
+    //el método after se ejecuta cuando el método finaliza
+    @After("greetingLoggerPointcut()")
+    public void afterGreeting(JoinPoint joinPoint) {
+        logger.info("------after greeting-----");
+        logger.info("Class invoked in After: " + joinPoint.getSignature().getDeclaringTypeName());
+        
+        
+        //2a forma de obtener los argumentos utilizando stream y Arrays
+        String argumentos= Arrays.stream(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(", "));
+        logger.info("Arguments passed in After: " + argumentos);
+    }
+    
+    //el método around se ejecuta antes y después del método envolviendo el punto de corte Before y After
+    @Around("greetingLoggerPointcut()")
     public Object aroundGreeting(ProceedingJoinPoint joinPoint) throws Throwable {
         logger.info("------Around Execution------");
         logger.info("Class invoked: " + joinPoint.getSignature().getDeclaringTypeName());
