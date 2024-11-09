@@ -1,4 +1,4 @@
-package io.codemalone.srpingboot_jpa;
+package io.codemalone.springboot_jpa;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import io.codemalone.srpingboot_jpa.entity.Person;
-import io.codemalone.srpingboot_jpa.repository.PersonRepository;
+import io.codemalone.springboot_jpa.entity.Person;
+import io.codemalone.springboot_jpa.repository.PersonRepository;
 
 @SpringBootApplication
 public class SrpingbootJpaApplication implements CommandLineRunner{

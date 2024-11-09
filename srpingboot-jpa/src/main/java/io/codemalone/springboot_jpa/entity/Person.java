@@ -1,4 +1,4 @@
-package io.codemalone.srpingboot_jpa.entity;
+package io.codemalone.springboot_jpa.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

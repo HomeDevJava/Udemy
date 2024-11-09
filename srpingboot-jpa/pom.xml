@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.codemalone</groupId>
-	<artifactId>srpingboot-jpa</artifactId>
+	<artifactId>springboot-jpa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>srpingboot-jpa</name>
-	<description>Demo project for Spring Boot</description>
+	<name>springboot-jpa</name>
+	<description>Ejemplo de uso de JPA</description>
 	<url/>
 	<licenses>
 		<license/>
