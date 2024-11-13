@@ -23,7 +23,8 @@ public class SrpingbootJpaApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 
-		List<Person> persons = (List<Person>) personRepository.findAll();
+		//List<Person> persons = (List<Person>) personRepository.findAll();
+		List<Person> persons = (List<Person>) personRepository.findByProgrammingLanguageAndName("Python", "Pepe");
 		persons.stream().forEach(System.out::println);
 	}
 
