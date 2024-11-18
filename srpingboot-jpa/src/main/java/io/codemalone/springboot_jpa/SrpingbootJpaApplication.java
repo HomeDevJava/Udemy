@@ -1,6 +1,7 @@
 package io.codemalone.springboot_jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,7 +12,7 @@ import io.codemalone.springboot_jpa.entity.Person;
 import io.codemalone.springboot_jpa.repository.PersonRepository;
 
 @SpringBootApplication
-public class SrpingbootJpaApplication implements CommandLineRunner{
+public class SrpingbootJpaApplication implements CommandLineRunner {
 
 	@Autowired
 	private PersonRepository personRepository;
@@ -23,7 +24,30 @@ public class SrpingbootJpaApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 
-		//List<Person> persons = (List<Person>) personRepository.findAll();
+		findOne();
+	}
+
+	private void findOne() {
+
+		/* Person person = null;
+		Optional<Person> personOptional = personRepository.findById(8L);
+		if (personOptional.isPresent()) {
+			person = personOptional.get();
+		}
+		System.out.println(person); */
+
+		//el codigo de arriba se simplifica con el siguiente
+		personRepository.findById(1L).ifPresent(System.out::println);
+
+
+		/*
+		Person person = personRepository.findById(1L).orElseThrow(null);
+		System.out.println(person); */
+	}
+
+	public void listPerson() {
+
+		// List<Person> persons = (List<Person>) personRepository.findAll();
 		List<Person> persons = (List<Person>) personRepository.findByProgrammingLanguageAndName("Python", "Pepe");
 		persons.stream().forEach(System.out::println);
 

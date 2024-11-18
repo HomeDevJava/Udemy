@@ -1,6 +1,7 @@
 package io.codemalone.springboot_jpa.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -27,5 +28,8 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     //Sobrecarga de metodo
     @Query("SELECT p.name, p.programmingLanguage FROM Person p WHERE p.programmingLanguage = ?1")
     List<Object[]> obtenerPersonData( String programmingLanguage);
+
+
+    Optional<Person> findById(Long id);
 
 }
