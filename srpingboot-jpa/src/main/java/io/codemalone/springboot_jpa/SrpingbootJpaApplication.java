@@ -26,6 +26,9 @@ public class SrpingbootJpaApplication implements CommandLineRunner{
 		//List<Person> persons = (List<Person>) personRepository.findAll();
 		List<Person> persons = (List<Person>) personRepository.findByProgrammingLanguageAndName("Python", "Pepe");
 		persons.stream().forEach(System.out::println);
+
+		List<Object[]> personData = personRepository.obtenerPersonData("Java");
+		personData.stream().forEach(person -> System.out.println(person[0] + " es experto en: " + person[1]));
 	}
 
 }

@@ -20,4 +20,12 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     //este metodo  cumple el mismo rol que el anterior pero usando la nomenclatura de query method
     List<Person> findByProgrammingLanguageAndName(String programmingLanguage, String name);
 
+    //este metodo obtiene solo ciertos campos  del objeto person, aunque es recomendable devolver el objeto completo
+    @Query("SELECT p.name, p.programmingLanguage FROM Person p")
+    List<Object[]> obtenerPersonData();
+
+    //Sobrecarga de metodo
+    @Query("SELECT p.name, p.programmingLanguage FROM Person p WHERE p.programmingLanguage = ?1")
+    List<Object[]> obtenerPersonData( String programmingLanguage);
+
 }
