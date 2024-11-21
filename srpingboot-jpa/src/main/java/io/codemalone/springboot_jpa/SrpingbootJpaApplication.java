@@ -25,6 +25,7 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		findOne();
+		create();
 	}
 
 	private void findOne() {
@@ -57,6 +58,15 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 
 		List<Object[]> personData = personRepository.obtenerPersonData("Java");
 		personData.stream().forEach(person -> System.out.println(person[0] + " es experto en: " + person[1]));
+	}
+
+	public void create(){
+		
+		Person person = new Person();
+		person.setName("Lalo");
+		person.setLastname("Thor");
+		person.setProgramingLanguage("Python");
+		personRepository.save(person);
 	}
 
 }
