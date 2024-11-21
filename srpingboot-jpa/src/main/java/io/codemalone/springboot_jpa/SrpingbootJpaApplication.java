@@ -37,7 +37,11 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 		System.out.println(person); */
 
 		//el codigo de arriba se simplifica con el siguiente
-		personRepository.findById(1L).ifPresent(System.out::println);
+		personRepository.findOne(1L).ifPresent(System.out::println);
+		
+		personRepository.findOneName("Jisashi").ifPresent(System.out::println);
+		personRepository.findOneLikeName("fa").ifPresent(System.out::println);
+		personRepository.findByNameContaining("ria").ifPresent(System.out::println);
 
 
 		/*

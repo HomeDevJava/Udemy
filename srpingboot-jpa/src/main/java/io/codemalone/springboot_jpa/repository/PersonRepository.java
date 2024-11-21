@@ -32,4 +32,16 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     Optional<Person> findById(Long id);
 
+    @Query("SELECT p FROM Person p WHERE p.id = ?1")
+    Optional<Person> findOne(Long id);
+   
+    @Query("SELECT p FROM Person p WHERE p.name = ?1")
+    Optional<Person> findOneName(String name);
+   
+    @Query("SELECT p FROM Person p WHERE p.name like %?1%")
+    Optional<Person> findOneLikeName(String name);
+    Optional<Person> findByNameContaining(String string);
+    
+    
+
 }
