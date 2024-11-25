@@ -26,8 +26,7 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		findOne();
-		create();
+		update();
 	}
 
 	@Transactional(readOnly = true)
@@ -84,6 +83,31 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 
 		personRepository.findById(personNew.getId()).ifPresent(System.out::println);
 		
+	}
+
+	@Transactional
+	public void update(){
+		//solicita el id y lo busca
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Ingrese el id: ");
+		Long id=scanner.nextLong();
+		Optional<Person> person=personRepository.findById(id);
+
+		//valida si existe el id
+		if(!person.isPresent()){
+			System.out.println("No existe el id");			
+		}
+
+		//si existe el id lo actualiza
+		person.ifPresent(p -> {
+			System.out.println(p);
+			System.out.println("Ingrese el lenguaje de programacion: ");
+			String programmingLanguage = scanner.next();
+			p.setProgramingLanguage(programmingLanguage);
+			Person personDb=personRepository.save(p);
+			System.out.println(personDb);
+		});
+		scanner.close();
 	}
 
 }
