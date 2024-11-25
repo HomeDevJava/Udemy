@@ -2,11 +2,13 @@ package io.codemalone.springboot_jpa;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.codemalone.springboot_jpa.entity.Person;
 import io.codemalone.springboot_jpa.repository.PersonRepository;
@@ -28,6 +30,7 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 		create();
 	}
 
+	@Transactional(readOnly = true)
 	private void findOne() {
 
 		/* Person person = null;
@@ -50,6 +53,7 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 		System.out.println(person); */
 	}
 
+	@Transactional(readOnly = true)
 	public void listPerson() {
 
 		// List<Person> persons = (List<Person>) personRepository.findAll();
@@ -60,13 +64,26 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 		personData.stream().forEach(person -> System.out.println(person[0] + " es experto en: " + person[1]));
 	}
 
+	@Transactional
 	public void create(){
+
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Ingrese el nombre: ");
+		String name = scanner.nextLine();
+		System.out.println("Ingrese el apellido: ");
+		String lastname = scanner.nextLine();
+		System.out.println("Ingrese el lenguaje de programacion: ");
+		String programmingLanguage = scanner.nextLine();
 		
 		Person person = new Person();
-		person.setName("Lalo");
-		person.setLastname("Thor");
-		person.setProgramingLanguage("Python");
-		personRepository.save(person);
+		person.setName(name);
+		person.setLastname(lastname);
+		person.setProgramingLanguage(programmingLanguage);
+		Person personNew= personRepository.save(person);
+		scanner.close();
+
+		personRepository.findById(personNew.getId()).ifPresent(System.out::println);
+		
 	}
 
 }
