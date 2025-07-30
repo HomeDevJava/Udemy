@@ -38,6 +38,7 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 		System.out.println("7.- Actualizar Persona");
 		System.out.println("8.- Eliminar Persona");
 		System.out.println("9.- Busqueda personalizada por Id");
+		System.out.println("10.- Busqueda findMixAllPerson");
 		System.out.println("0.- Salir");
 
 		System.out.println("Seleccione una opcion: ");
@@ -68,6 +69,12 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 			case "9":
 				obtenerPersonDataById();
 				break;
+			case "10":
+				findMixAll();
+				break;
+			case "11":
+				findAllObjectPersonalized();
+				break;
 			case "0":
 				break;
 		}
@@ -76,12 +83,26 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 
 	}
 
+	private void findAllObjectPersonalized() {
+		System.out.println("============Consulta findAllObjectPersonalized con constructor===================");
+		List<Person> persons = personRepository.findAllObjectPersonalized();
+		persons.forEach(System.out::println);
+	}
+
+	private void findMixAll() {
+		System.out.println("============Consulta findMixAllPerson===================");
+		List<Object[]> persons = personRepository.findMixAllPerson();
+		persons.stream().forEach(p -> {
+			System.out.println("Nombre: " + p[0] + ", Lenguaje de Programacion: " + p[1]);
+		});
+	}
+
 	public void findByProgrammingLanguage() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Ingrese el lenguaje de programacion: ");
 		String programmingLanguage = scanner.next();
 		personRepository.findByProgrammingLanguage(programmingLanguage).forEach(System.out::println);
-		
+
 		scanner.close();
 	}
 
@@ -222,26 +243,27 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 		scanner.close();
 	}
 
+	@Transactional(readOnly = true)
 	public void obtenerPersonDataById() {
 		// solicita el id y lo busca
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Ingrese el id  para busqueda personalizada: ");
 		Long id = scanner.nextLong();
 
-		Object data= personRepository.obtenerPersonDataById(id);
+		Object data = personRepository.obtenerPersonDataById(id);
 
 		Stream.of(data)
-		.map(dd -> {
-			if (dd == null) {
-				return new Object[] { "No existe el id", "No existe el id" };
-			}
-			return (Object[]) dd;
-		})
-		.filter(o -> o != null ).forEach(p -> {
-			p[0] = p[0] == null ? "No existe el id" : p[0];
-			//var d= (Object[]) p;
-			System.out.println("Nombre: " + p[0] + ", Lenguaje de Programacion: " + p[1]);
-		});
+				.map(dd -> {
+					if (dd == null) {
+						return new Object[] { "No existe el id", "No existe el id" };
+					}
+					return (Object[]) dd;
+				})
+				.filter(o -> o != null).forEach(p -> {
+					p[0] = p[0] == null ? "No existe el id" : p[0];
+					// var d= (Object[]) p;
+					System.out.println("Nombre: " + p[0] + ", Lenguaje de Programacion: " + p[1]);
+				});
 
 		scanner.close();
 

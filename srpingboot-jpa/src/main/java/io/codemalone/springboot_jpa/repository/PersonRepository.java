@@ -33,6 +33,14 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     @Query("SELECT p.name, p.programmingLanguage FROM Person p WHERE p.id = ?1")
     Object obtenerPersonDataById( Long id);
 
+    //otra forma de obtener el objeto completo y un campo adicional
+    @Query("SELECT p, p.programmingLanguage FROM Person p")
+    List<Object[]> findMixAllPerson();
+
+    //obtene un objeto personalizado con los campos que se le indiquen usando el constructor de la clase Person
+    @Query("SELECT new Person(p.name, p.lastname) FROM Person p")
+    List<Person> findAllObjectPersonalized();
+
 
     Optional<Person> findById(Long id);
 
