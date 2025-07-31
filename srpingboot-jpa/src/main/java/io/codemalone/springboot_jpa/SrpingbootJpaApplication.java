@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.codemalone.springboot_jpa.dto.PersonDto;
 import io.codemalone.springboot_jpa.entity.Person;
 import io.codemalone.springboot_jpa.repository.PersonRepository;
 
@@ -39,6 +40,8 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 		System.out.println("8.- Eliminar Persona");
 		System.out.println("9.- Busqueda personalizada por Id");
 		System.out.println("10.- Busqueda findMixAllPerson");
+		System.out.println("11.- Busqueda findAllObjectPersonalized usando instancia new");
+		System.out.println("12.- Busqueda FindAll DTO");
 		System.out.println("0.- Salir");
 
 		System.out.println("Seleccione una opcion: ");
@@ -75,12 +78,21 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 			case "11":
 				findAllObjectPersonalized();
 				break;
+			case "12":
+				findAllPersonDto();
+				break;
 			case "0":
 				break;
 		}
 
 		sc.close();
 
+	}
+
+	private void findAllPersonDto() {
+		System.out.println("============Consulta todos los Registros DTO===================");
+		List<PersonDto> persons = personRepository.findAllPersonDto();
+		persons.forEach(System.out::println);
 	}
 
 	private void findAllObjectPersonalized() {

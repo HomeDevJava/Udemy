@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import io.codemalone.springboot_jpa.dto.PersonDto;
 import io.codemalone.springboot_jpa.entity.Person;
 
 public interface PersonRepository extends CrudRepository<Person, Long> {
@@ -40,6 +41,11 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     //obtene un objeto personalizado con los campos que se le indiquen usando el constructor de la clase Person
     @Query("SELECT new Person(p.name, p.lastname) FROM Person p")
     List<Person> findAllObjectPersonalized();
+
+    //uso de clase DTO
+    @Query("SELECT new io.codemalone.springboot_jpa.dto.PersonDto(p.name, p.lastname) FROM Person p")
+    List<PersonDto> findAllPersonDto();
+
 
 
     Optional<Person> findById(Long id);
