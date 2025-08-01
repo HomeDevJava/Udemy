@@ -47,6 +47,14 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     List<PersonDto> findAllPersonDto();
 
 
+    @Query("SELECT DISTINCT p.programmingLanguage FROM Person p")
+    List<String> findDistinctProgrammingLanguage();
+    
+    @Query("SELECT  COUNT(DISTINCT(p.programmingLanguage)) FROM Person p")
+    List<Object[]> findDistinctProgrammingLanguageCount();
+
+
+
 
     Optional<Person> findById(Long id);
 

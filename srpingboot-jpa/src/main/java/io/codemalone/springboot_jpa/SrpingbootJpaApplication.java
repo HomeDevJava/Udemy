@@ -42,6 +42,7 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 		System.out.println("10.- Busqueda findMixAllPerson");
 		System.out.println("11.- Busqueda findAllObjectPersonalized usando instancia new");
 		System.out.println("12.- Busqueda FindAll DTO");
+		System.out.println("13.- Busqueda FindAll DTO");
 		System.out.println("0.- Salir");
 
 		System.out.println("Seleccione una opcion: ");
@@ -81,12 +82,27 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 			case "12":
 				findAllPersonDto();
 				break;
+			case "13":
+				findDistinctProgrammingLanguage();
+				break;
 			case "0":
 				break;
 		}
 
 		sc.close();
 
+	}
+
+	private void findDistinctProgrammingLanguage() {
+		System.out.println("============Consulta Distinct Programming Language===================");
+		List<String> programmingLanguages = personRepository.findDistinctProgrammingLanguage();
+		programmingLanguages.forEach(System.out::println);
+		System.out.println("Total de lenguajes de programacion distintos: " + programmingLanguages.size());
+		System.out.println("===========Count/Distinct=====================");
+		List<Object[]> programmingLanguageCounts = personRepository.findDistinctProgrammingLanguageCount();
+		programmingLanguageCounts.forEach(p -> {
+			System.out.println("Lenguajes: %s".formatted(p[0]));
+		});
 	}
 
 	private void findAllPersonDto() {
