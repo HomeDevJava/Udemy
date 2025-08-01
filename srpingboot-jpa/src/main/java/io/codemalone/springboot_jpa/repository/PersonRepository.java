@@ -53,7 +53,9 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     @Query("SELECT  COUNT(DISTINCT(p.programmingLanguage)) FROM Person p")
     List<Object[]> findDistinctProgrammingLanguageCount();
 
-
+    //Concatenacion, Lower/Upper y Between
+    @Query("SELECT UPPER(p.name||' '||p.lastname) FROM Person p  WHERE p.id BETWEEN 2 and 5")
+    List<String> findAllConcatUpperBetweenId();
 
 
     Optional<Person> findById(Long id);

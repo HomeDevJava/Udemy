@@ -43,6 +43,7 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 		System.out.println("11.- Busqueda findAllObjectPersonalized usando instancia new");
 		System.out.println("12.- Busqueda FindAll DTO");
 		System.out.println("13.- Busqueda FindAll DTO");
+		System.out.println("14.- Busqueda Between, Upper/Lower y Concatenacion");
 		System.out.println("0.- Salir");
 
 		System.out.println("Seleccione una opcion: ");
@@ -85,12 +86,22 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 			case "13":
 				findDistinctProgrammingLanguage();
 				break;
+			case "14":
+				findAllConcatUpperBetweenId();
+				break;
 			case "0":
 				break;
 		}
 
 		sc.close();
 
+	}
+
+	private void findAllConcatUpperBetweenId() {
+		System.out.println("============Consulta Between, Upper, Concat===================");
+		List<String> names = personRepository.findAllConcatUpperBetweenId();
+		names.forEach(System.out::println);
+		
 	}
 
 	private void findDistinctProgrammingLanguage() {
