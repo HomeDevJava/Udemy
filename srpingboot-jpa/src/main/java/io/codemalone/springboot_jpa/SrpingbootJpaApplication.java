@@ -44,6 +44,7 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 		System.out.println("12.- Busqueda FindAll DTO");
 		System.out.println("13.- Busqueda FindAll DTO");
 		System.out.println("14.- Busqueda Between, Upper/Lower y Concatenacion");
+		System.out.println("15.- Busqueda Between x inicio de la letra del nombre");
 		System.out.println("0.- Salir");
 
 		System.out.println("Seleccione una opcion: ");
@@ -89,6 +90,9 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 			case "14":
 				findAllConcatUpperBetweenId();
 				break;
+			case "15":
+				findByNameBetween();
+				break;
 			case "0":
 				break;
 		}
@@ -100,6 +104,13 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 	private void findAllConcatUpperBetweenId() {
 		System.out.println("============Consulta Between, Upper, Concat===================");
 		List<String> names = personRepository.findAllConcatUpperBetweenId();
+		names.forEach(System.out::println);
+		
+	}
+
+	private void findByNameBetween() {
+		System.out.println("============Consulta Between Names ===================");
+		List<Person> names = personRepository.findByNameBetween("J", "Q");
 		names.forEach(System.out::println);
 		
 	}

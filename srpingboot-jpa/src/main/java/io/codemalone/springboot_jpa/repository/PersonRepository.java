@@ -57,6 +57,8 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     @Query("SELECT UPPER(p.name||' '||p.lastname) FROM Person p  WHERE p.id BETWEEN 2 and 5")
     List<String> findAllConcatUpperBetweenId();
 
+    List<Person> findByNameBetween(String name1, String name2);
+
 
     Optional<Person> findById(Long id);
 
