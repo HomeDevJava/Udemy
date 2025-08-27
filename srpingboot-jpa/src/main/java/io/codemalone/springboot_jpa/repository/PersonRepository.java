@@ -54,10 +54,11 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     List<Object[]> findDistinctProgrammingLanguageCount();
 
     //Concatenacion, Lower/Upper y Between
-    @Query("SELECT UPPER(p.name||' '||p.lastname) FROM Person p  WHERE p.id BETWEEN 2 and 5")
+    @Query("SELECT UPPER(p.name||' '||p.lastname) FROM Person p  WHERE p.id BETWEEN 2 and 5 order by p.name desc, p.lastname desc")
     List<String> findAllConcatUpperBetweenId();
 
-    List<Person> findByNameBetween(String name1, String name2);
+    //nuevo metodo usando query method y between, ordenando por name
+    List<Person> findByNameBetweenOrderByNameDescLastnameAsc(String name1, String name2);
 
 
     Optional<Person> findById(Long id);

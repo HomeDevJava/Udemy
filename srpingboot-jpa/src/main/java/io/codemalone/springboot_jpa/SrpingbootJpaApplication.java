@@ -110,7 +110,7 @@ public class SrpingbootJpaApplication implements CommandLineRunner {
 
 	private void findByNameBetween() {
 		System.out.println("============Consulta Between Names ===================");
-		List<Person> names = personRepository.findByNameBetween("J", "Q");
+		List<Person> names = personRepository.findByNameBetweenOrderByNameDescLastnameAsc("J", "Q");
 		names.forEach(System.out::println);
 		
 	}
